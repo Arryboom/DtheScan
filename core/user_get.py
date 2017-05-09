@@ -7,9 +7,6 @@ monkey.patch_all()
 import re
 import requests
 import time
-import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
 class Get_User():
     def __init__(self,url):
         self.url=url
@@ -59,17 +56,16 @@ class Get_User():
             return False
 
     def get_name(self,_html):
-        r=u'<title>(.*?)的'
         try:
-            _compile=re.search(r,_html)
-            #print _html
+            _compile=re.search('<title>(.*?)</title>',_html)
             if _compile and '<div id="messagetext" class="alert_error">' not in _html:
-                name= _compile.group(1)
+                name=_compile.group(1).split(u'的')[0]
                 print '\r[ {time} ] get user to : {user}\t\t'.format(time=time.strftime('%X', time.localtime()),
                                                                user=name)
                 self.user_lists.add(name)
+
         except UnicodeEncodeError as e:
-            print e
+            pass
 
     def scan(self):
         while not self.queue.empty():
@@ -88,6 +84,10 @@ class Get_User():
 def get_users(url):
     e = Get_User(url)
     return e.user_lists
+
+
+
+
 
 
 
