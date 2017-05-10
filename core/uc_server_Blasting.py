@@ -41,7 +41,7 @@ class Uc_Blasting():
                     self.queue.queue.clear()
 
             except Exception as e:
-                print e
+                pass
 
     def run(self):
         self.load_worker()
